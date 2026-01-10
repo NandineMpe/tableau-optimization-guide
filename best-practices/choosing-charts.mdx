@@ -1,0 +1,47 @@
+---
+title: "Choosing the Right Chart"
+description: "A guide for answering your data questions with the right visual."
+---
+
+## Start with a Question
+
+Don't choose a chart because it looks cool. Choose it because it answers a specific question.
+
+### 1. I want to compare values (Magnitude)
+*   **Bar Chart:** The gold standard for comparison. Easy to read, clear differences.
+    *   *Example:* Sales by Region, Top 10 Products.
+*   **Column Chart:** Good for comparing values over time (e.g., Sales by Month) if you want to emphasize the individual months.
+
+### 2. I want to see a trend over time (Change)
+*   **Line Chart:** best for showing continuous data over time. The slope of the line clearly shows the rate of change.
+    *   *Example:* Stock prices, Website traffic over a year.
+*   **Area Chart:** Similar to a line chart, but emphasizes the volume.
+    *   *Example:* Total inventory levels over time.
+
+### 3. I want to see the relationship between two numbers (Correlation)
+*   **Scatter Plot:** The best way to spotting outliers and trends between two variables.
+    *   *Example:* Marketing Spend vs. Revenue (Is higher spend leading to higher revenue?).
+
+### 4. I want to see parts of a whole (Composition)
+*   **Stacked Bar Chart:** Good for showing how a total is broken down.
+    *   *Example:* Total Sales broken down by Category.
+*   **Pie Chart:** Use sparingly. Only useful if you have 2-3 categories (e.g., Yes/No/Maybe).
+    *   *Avoid if:* You have more than 3 slices or if the differences are small.
+
+### 5. I want to see distribution (Range)
+*   **Histogram:** Shows how data is clustered.
+    *   *Example:* Number of customers by Age Group.
+*   **Box and Whisker:** Shows the median, quartiles, and outliers. Advanced but powerful.
+
+### 6. I want to see geographical data (Location)
+*   **Map:** Use only when location is the most important factor.
+    *   *Example:* Sales tax by State.
+    *   *Avoid if:* You just want to compare sales numbers (use a Bar Chart with State names instead—it's easier to compare lengths than color shades).
+
+## "Show Me" Feature
+
+If you are stuck, use Tableau's **Show Me** panel. Select the data fields you want to visualize (e.g., "Sales" and "Category"), and Tableau will highlight the recommended charts.
+
+<Warning>
+**Avoid 3D Charts:** Tableau generally avoids 3D charts for a reason—they distort the data and make it hard to read. Stick to 2D for clarity.
+</Warning>

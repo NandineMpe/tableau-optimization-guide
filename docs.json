@@ -1,68 +1,57 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Tableau Optimization Guide",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#00619E",
+    "light": "#60C6FD",
+    "dark": "#004385"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "User Guide",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "index"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Interacting with Data",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "interacting/filters-and-actions",
+              "interacting/custom-views",
+              "interacting/downloading"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Self-Service",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "exploration/web-edit",
+              "exploration/ask-data"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Performance Tuning",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+              "performance/workbook-optimization"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Best Practices",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "best-practices/choosing-charts"
+            ]
+          },
+          {
+            "group": "Collaboration",
+            "pages": [
+              "collaboration/subscriptions",
+              "collaboration/alerts",
+              "collaboration/comments"
             ]
           }
         ]
@@ -71,14 +60,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "anchor": "Tableau Help",
+          "href": "https://help.tableau.com/current/pro/desktop/en-us/default.htm",
           "icon": "book-open-cover"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Internal Support",
+          "href": "mailto:analytics@company.com",
+          "icon": "life-ring"
         }
       ]
     }
@@ -90,33 +79,28 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Request License",
+        "href": "mailto:analytics@company.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Open Tableau Server",
+      "href": "https://tableau.yourcompany.com"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/yourcompany"
     }
   }
 }

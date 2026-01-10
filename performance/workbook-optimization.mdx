@@ -1,0 +1,42 @@
+---
+title: "Workbook Optimization"
+description: "Strategies to make your dashboards load faster and respond smoother."
+---
+
+## Why is my Dashboard Slow?
+
+Performance is usually impacted by one of three things:
+1.  **Data Volume:** Too much data being queried.
+2.  **Complexity:** Too many calculations or marks on the screen.
+3.  **Layout:** Too many individual sheets or filters on a single dashboard.
+
+### 1. Data Source Best Practices
+
+*   **Use Extracts:** Live connections can be slow. Extracts (hyper files) remain the fastest way to query data.
+*   **"Hide" Unused Fields:** Before publishing, hide fields you aren't using. This reduces the extract size.
+*   **Filter Early:** Use Data Source Filters to restrict data *before* it hits your dashboard.
+*   **Materialize Calculations:** When creating an extract, choose to "Compute Calculations Now" so they are pre-calculated.
+*   **Avoid Custom SQL:** It forces Tableau to wrap queries in a sub-select, which kills performance. Use Relationships (the "Noodle") instead.
+
+### 2. Visualization Best Practices
+
+*   **Limit your "Marks":** Every bar, dot, and map point is a "mark" the browser has to render.
+    *   *Bad:* A scatter plot with 500,000 points.
+    *   *Good:* A density map or a heatmap that aggregates those points.
+*   **Avoid "Only Relevant Values" Filters:** This forces Tableau to run a query just to populate the filter dropdown. Use "All Values in Database" for faster UI.
+*   **Simplify Tooltips:** Complex visualizations inside tooltips (Viz-in-Tooltip) generate extra queries on hover.
+
+### 3. Calculations to Avoid
+
+*   **Count Distinct (COUNTD):** This is one of the slowest operations. Use `COUNT()` if you don't need unique values.
+*   **String Manipulation:** Calculations like `LEFT()`, `RIGHT()`, or `REGEXP()` are slower than simple boolean or numeric math.
+*   **Nested LODs:** Level of Detail expressions are powerful but heavy. Don't nest them 3 levels deep if you can avoid it.
+
+### 4. Running the Performance Recorder
+
+If you can't find the bottleneck, let Tableau tell you.
+
+1.  In Desktop, go to **Help** > **Settings and Performance** > **Start Performance Recording**.
+2.  Interact with your dashboard (change filters, load sheets).
+3.  Go back to **Help**... and **Stop Performance Recording**.
+4.  Tableau will generate a new workbook showing exactly how long each query and rendering step took.
