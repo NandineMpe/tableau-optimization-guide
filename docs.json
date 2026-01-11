@@ -1,5 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
+  "scripts": [
+    {
+      "src": "/scripts/chat-widget.js",
+      "defer": true
+    }
+  ],
   "theme": "mint",
   "name": "Tee's Tableau Guide",
   "colors": {
