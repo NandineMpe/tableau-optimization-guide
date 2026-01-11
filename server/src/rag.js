@@ -13,6 +13,7 @@ export class TableauGeminiBrain {
     async initialize() {
         console.log("Server initialized (Lightweight Mode).");
         // No download, no upload. Pure cloud.
+        // Force redeploy - using gemini-1.5-flash-latest model
     }
 
     async query(question) {
