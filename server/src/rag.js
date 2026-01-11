@@ -1,4 +1,5 @@
-import { GoogleGenerativeAI, GoogleAIFileManager } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleAIFileManager } from "@google/generative-ai/server";
 
 // URL of the Tableau Manual PDF
 const PDF_URL = "https://help.tableau.com/current/offline/en-us/tableau_desktop.pdf";
