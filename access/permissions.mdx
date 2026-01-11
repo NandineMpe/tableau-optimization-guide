@@ -1,0 +1,26 @@
+---
+title: "Permissions & Security"
+description: "Who can see what, and why."
+---
+
+## Understanding Roles
+
+In Tableau, not everyone is equal. Your ability to edit, save, or download depends on your **Site Role**.
+
+### Common Roles
+
+*   **Viewer:** Can view dashboards, interact with filters, and download images. Cannot edit or create new content.
+*   **Explorer:** Can view and **Web Edit**. Can create new visualizations from *existing* published data sources.
+*   **Creator:** Can connect to new data sources (Excel, SQL) and publish entirely new workbooks.
+
+## Project Permissions
+
+Content in Tableau is organized into **Projects** (like folders).
+*   **Locked:** Some projects are "Locked", meaning permissions are controlled by the Project Leader.
+*   **Custom:** Other projects allow the Workbook Owner to decide who sees their work.
+
+### "Why can't I see...?"
+
+If you get a "Resource Not Found" or "Permission Denied" error:
+1.  **Check the Project:** Do you have access to the folder the report lives in?
+2.  **Row Level Security:** Sometimes you can see the *dashboard*, but the *data* is blank. This usually means **Row Level Security** is active, and your username hasn't been added to the allowed list for that region/department.

@@ -75,6 +75,13 @@
               "collaboration/alerts",
               "collaboration/comments"
             ]
+          },
+          {
+            "group": "Access & Security",
+            "pages": [
+              "access/mobile",
+              "access/permissions"
+            ]
           }
         ]
       }
