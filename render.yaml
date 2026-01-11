@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: tableau-optimization-guide
+    runtime: docker
+    repo: https://github.com/NandineMpe/tableau-optimization-guide.git
+    branch: main
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PORT
+        value: 3000
+    healthCheckPath: /messages

@@ -1,10 +1,11 @@
 {
     "name": "tableau-knowledge-server",
     "version": "1.0.0",
+    "type": "module",
     "description": "MCP Server for Tableau Documentation RAG",
     "main": "dist/index.js",
     "scripts": {
-        "build": "echo 'No build needed for JS'",
+        "build": "echo 'Using JS directly - no build needed'",
         "start": "node --max-old-space-size=460 src/index.js",
         "dev": "node src/index.js"
     },

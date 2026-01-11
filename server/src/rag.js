@@ -1,3 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 // URL of the Tableau Manual
 const PDF_URL = "https://help.tableau.com/current/offline/en-us/tableau_desktop.pdf";
 
