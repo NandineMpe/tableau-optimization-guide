@@ -9,7 +9,7 @@ import { TableauGeminiBrain } from "./rag.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json()); // Allow JSON body parsing for the chat widget
 
 // Initialize the Knowledge Base with Gemini
