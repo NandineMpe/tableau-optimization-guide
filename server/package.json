@@ -7,7 +7,8 @@
     "scripts": {
         "build": "echo 'Using JS directly - no build needed'",
         "start": "node --max-old-space-size=460 src/index.js",
-        "dev": "node src/index.js"
+        "dev": "node src/index.js",
+        "upload-pdf": "node upload-tableau-pdf.js"
     },
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.0.1",
