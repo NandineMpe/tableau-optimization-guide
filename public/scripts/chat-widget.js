@@ -1,10 +1,10 @@
 (function () {
-    // CONFIGURATION: Change this to your actual deployed server URL later
-    const BACKEND_URL = "http://localhost:3000/messages"; // Placeholder
+  // CONFIGURATION: Change this to your actual deployed server URL later
+  const BACKEND_URL = "https://tableau-optimization-guide.onrender.com/messages"; // Placeholder
 
-    // Create Styles
-    const style = document.createElement('style');
-    style.innerHTML = `
+  // Create Styles
+  const style = document.createElement('style');
+  style.innerHTML = `
     .gemini-chat-bubble {
       position: fixed;
       bottom: 20px;
@@ -121,16 +121,16 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   `;
-    document.head.appendChild(style);
+  document.head.appendChild(style);
 
-    // Create UI Elements
-    const bubble = document.createElement('div');
-    bubble.className = "gemini-chat-bubble";
-    bubble.innerHTML = `<svg class="gemini-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>`;
+  // Create UI Elements
+  const bubble = document.createElement('div');
+  bubble.className = "gemini-chat-bubble";
+  bubble.innerHTML = `<svg class="gemini-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>`;
 
-    const window = document.createElement('div');
-    window.className = "gemini-chat-window";
-    window.innerHTML = `
+  const window = document.createElement('div');
+  window.className = "gemini-chat-window";
+  window.innerHTML = `
     <div class="gemini-chat-header">
       <span>Ask Tee's Guide (Beta)</span>
       <span class="gemini-chat-close">×</span>
@@ -144,73 +144,73 @@
     </div>
   `;
 
-    document.body.appendChild(bubble);
-    document.body.appendChild(window);
+  document.body.appendChild(bubble);
+  document.body.appendChild(window);
 
-    // Logic
-    let isOpen = false;
-    bubble.addEventListener('click', () => {
-        isOpen = !isOpen;
-        window.style.display = isOpen ? 'flex' : 'none';
-        if (isOpen) document.getElementById('gemini-input').focus();
-    });
+  // Logic
+  let isOpen = false;
+  bubble.addEventListener('click', () => {
+    isOpen = !isOpen;
+    window.style.display = isOpen ? 'flex' : 'none';
+    if (isOpen) document.getElementById('gemini-input').focus();
+  });
 
-    const closeBtn = window.querySelector('.gemini-chat-close');
-    closeBtn.addEventListener('click', () => {
-        isOpen = false;
-        window.style.display = 'none';
-    });
+  const closeBtn = window.querySelector('.gemini-chat-close');
+  closeBtn.addEventListener('click', () => {
+    isOpen = false;
+    window.style.display = 'none';
+  });
 
-    const sendBtn = document.getElementById('gemini-send');
-    const input = document.getElementById('gemini-input');
-    const messagesDiv = document.getElementById('gemini-messages');
+  const sendBtn = document.getElementById('gemini-send');
+  const input = document.getElementById('gemini-input');
+  const messagesDiv = document.getElementById('gemini-messages');
 
-    async function sendMessage() {
-        const text = input.value.trim();
-        if (!text) return;
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
 
-        // Add User Message
-        addMessage(text, 'user');
-        input.value = '';
+    // Add User Message
+    addMessage(text, 'user');
+    input.value = '';
 
-        // Add Loading Spinner
-        const loadingId = addMessage('<div class="gemini-loader"></div>', 'bot');
+    // Add Loading Spinner
+    const loadingId = addMessage('<div class="gemini-loader"></div>', 'bot');
 
-        try {
-            // NOTE: This will fail until you deploy the server code to a real URL
-            const response = await fetch(BACKEND_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text }) // Adjust based on your server's expected body
-            });
+    try {
+      // NOTE: This will fail until you deploy the server code to a real URL
+      const response = await fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text }) // Adjust based on your server's expected body
+      });
 
-            const data = await response.json();
+      const data = await response.json();
 
-            // Remove loading and add Bot Message
-            document.getElementById(loadingId).remove();
-            // Assume server returns { content: [{text: "..."}] } or similar
-            const reply = data.content ? data.content[0].text : "I received your message, but the backend is not connected yet (Localhost).";
-            addMessage(reply, 'bot');
+      // Remove loading and add Bot Message
+      document.getElementById(loadingId).remove();
+      // Assume server returns { content: [{text: "..."}] } or similar
+      const reply = data.content ? data.content[0].text : "I received your message, but the backend is not connected yet (Localhost).";
+      addMessage(reply, 'bot');
 
-        } catch (e) {
-            document.getElementById(loadingId).remove();
-            addMessage("Error: Could not connect to the AI Server. Please deploy the backend.", 'bot');
-        }
+    } catch (e) {
+      document.getElementById(loadingId).remove();
+      addMessage("Error: Could not connect to the AI Server. Please deploy the backend.", 'bot');
     }
+  }
 
-    function addMessage(html, type) {
-        const div = document.createElement('div');
-        div.className = `gemini-message ${type}`;
-        div.innerHTML = html;
-        div.id = 'msg-' + Date.now();
-        messagesDiv.appendChild(div);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        return div.id;
-    }
+  function addMessage(html, type) {
+    const div = document.createElement('div');
+    div.className = `gemini-message ${type}`;
+    div.innerHTML = html;
+    div.id = 'msg-' + Date.now();
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    return div.id;
+  }
 
-    sendBtn.addEventListener('click', sendMessage);
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
 
 })();
