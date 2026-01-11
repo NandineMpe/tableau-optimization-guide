@@ -55,6 +55,11 @@ app.get("/sse", async (req, res) => {
     await server.connect(transport);
 });
 
+// Health Check Endpoint
+app.get("/messages", (req, res) => {
+    res.send("Tableau AI Server is Running! Send POST requests to this endpoint to chat.");
+});
+
 // HTTP Endpoint for Chat Widget
 app.post("/messages", async (req, res) => {
     const userMessage = req.body.message;

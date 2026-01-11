@@ -6,7 +6,7 @@ import path from "path";
 
 // URL of the Tableau Manual
 const PDF_URL = "https://help.tableau.com/current/offline/en-us/tableau_desktop.pdf?_gl=1*5xawr0*_gcl_au*MTI5OTMzODI0OC4xNzY4MDc3MDMz*_ga*MjUyMzE1MDMyLjE3NjgwNzcwMzU.*_ga_8YLN0SNXVS*czE3NjgwNzcwMzUkbzEkZzAkdDE3NjgwNzcwMzUkajYwJGwwJGgw";
-const LOCAL_PDF_PATH = path.resolve("./tableau_manual.pdf");
+const LOCAL_PDF_PATH = path.join('/tmp', 'tableau_manual.pdf');
 
 export class TableauGeminiBrain {
     constructor(apiKey) {
