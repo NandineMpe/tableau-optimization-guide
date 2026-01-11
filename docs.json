@@ -120,6 +120,9 @@
       "href": "https://tableau.yourcompany.com"
     }
   },
+  "search": {
+    "mode": "default"
+  },
   "contextual": {
     "options": [
       "copy",
