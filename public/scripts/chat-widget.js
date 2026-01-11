@@ -128,9 +128,9 @@
   bubble.className = "gemini-chat-bubble";
   bubble.innerHTML = `<svg class="gemini-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>`;
 
-  const window = document.createElement('div');
-  window.className = "gemini-chat-window";
-  window.innerHTML = `
+  const chatWindow = document.createElement('div');
+  chatWindow.className = "gemini-chat-window";
+  chatWindow.innerHTML = `
     <div class="gemini-chat-header">
       <span>Ask Tee's Guide (Beta)</span>
       <span class="gemini-chat-close">×</span>
@@ -145,20 +145,20 @@
   `;
 
   document.body.appendChild(bubble);
-  document.body.appendChild(window);
+  document.body.appendChild(chatWindow);
 
   // Logic
   let isOpen = false;
   bubble.addEventListener('click', () => {
     isOpen = !isOpen;
-    window.style.display = isOpen ? 'flex' : 'none';
+    chatWindow.style.display = isOpen ? 'flex' : 'none';
     if (isOpen) document.getElementById('gemini-input').focus();
   });
 
-  const closeBtn = window.querySelector('.gemini-chat-close');
+  const closeBtn = chatWindow.querySelector('.gemini-chat-close');
   closeBtn.addEventListener('click', () => {
     isOpen = false;
-    window.style.display = 'none';
+    chatWindow.style.display = 'none';
   });
 
   const sendBtn = document.getElementById('gemini-send');
