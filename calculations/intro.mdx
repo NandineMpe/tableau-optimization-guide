@@ -1,0 +1,41 @@
+---
+title: "Introduction to Calculations"
+description: "Create new data from your existing data."
+---
+
+## When to use a Calculation
+
+Sometimes the data you have isn't the data you need. 
+*   You have `Sales` and `Profit`, but you need `Profit Ratio`.
+*   You have `First Name` and `Last Name`, but you need `Full Name`.
+*   You have `Order Date`, but you need just the `Year`.
+
+**Calculated Fields** allow you to create this new data using formulas, similar to Excel.
+
+## Creating Your First Calculation
+
+1.  **Right-click** anywhere in the Data Pane (left sidebar).
+2.  Select **Create Calculated Field**.
+3.  **Name it:** Give it a clear name (e.g., "Profit Margin").
+4.  **Type the formula:** 
+    ```sql
+    SUM([Profit]) / SUM([Sales])
+    ```
+5.  **Check for Errors:** Look for the message "The calculation is valid" at the bottom.
+6.  **Click OK.**
+
+## Types of Calculations
+
+### 1. Row-Level Calculations
+These happen for *every single row* in your data.
+*   *Example:* `[Sales] * 0.1` (Calculate 10% tax for every transaction).
+
+### 2. Aggregate Calculations
+These happen *after* grouping the data.
+*   *Example:* `SUM([Sales])` (Total sales for the Region/Department/Year you are looking at).
+
+<Tip>
+  **Golden Rule:** You cannot mix aggregated and non-aggregated fields. 
+  *   *Bad:* `SUM([Sales]) / [Profit]`
+  *   *Good:* `SUM([Sales]) / SUM([Profit])`
+</Tip>

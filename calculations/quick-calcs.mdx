@@ -1,0 +1,29 @@
+---
+title: "Quick Table Calculations"
+description: "Complex math without writing a single formula."
+---
+
+## What are Quick Table Calculations?
+
+These are pre-built formulas that look at the visualization on the screen and calculate values relative to other marks.
+
+**Common uses:**
+*   Running Total (Cumulative Sum)
+*   Percent of Total ("How much of the pie is this slice?")
+*   Year over Year Growth ("How much did we grow since 2023?")
+*   Rank ("Who is #1?")
+
+## How to Apply One
+
+1.  **Build your Visual:** Drag `Order Date` onto Columns and `Sales` onto Rows. You see a line chart.
+2.  **Right-Click the Measure:** Right-click the green `SUM(Sales)` pill on the Rows shelf.
+3.  **Quick Table Calculation:** Select **Quick Table Calculation** form the menu.
+4.  **Choose your Calc:** Select **Running Total**.
+
+## Checking the Logic
+
+Once applied, the pill will have a small **triangle icon** (∆) on the right side. This indicates a Table Calculation is active.
+
+<Warning>
+  **Direction Matters:** Table Calculations depend on the layout. If you calculate "Percent of Total", make sure you know if it's "Percent of the Whole Table" or "Percent of the Row". You can change this by selecting **Compute Using** > **Table (Down)** or **Table (Across)**.
+</Warning>

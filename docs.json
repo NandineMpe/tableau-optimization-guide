@@ -20,6 +20,13 @@
             ]
           },
           {
+            "group": "Calculations",
+            "pages": [
+              "calculations/intro",
+              "calculations/quick-calcs"
+            ]
+          },
+          {
             "group": "Reporting",
             "pages": [
               "reporting/powerpoint",
