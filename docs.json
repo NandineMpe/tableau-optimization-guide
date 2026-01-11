@@ -20,6 +20,14 @@
             ]
           },
           {
+            "group": "Reporting",
+            "pages": [
+              "reporting/powerpoint",
+              "reporting/pdf-reports",
+              "reporting/story-points"
+            ]
+          },
+          {
             "group": "Interacting with Data",
             "pages": [
               "interacting/filters-and-actions",
