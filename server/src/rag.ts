@@ -1,32 +1,26 @@
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
-import { Document } from "langchain/document";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { ChatOpenAI } from "@langchain/openai";
-import { RetrievalQAChain } from "langchain/chains";
-import axios from "axios";
-import pdf from "pdf-parse";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleAIFileManager } from "@google/generative-ai/server";
 import fs from "fs";
+import axios from "axios";
 import path from "path";
 
 // URL of the Tableau Manual
 const PDF_URL = "https://help.tableau.com/current/offline/en-us/tableau_desktop.pdf?_gl=1*5xawr0*_gcl_au*MTI5OTMzODI0OC4xNzY4MDc3MDMz*_ga*MjUyMzE1MDMyLjE3NjgwNzcwMzU.*_ga_8YLN0SNXVS*czE3NjgwNzcwMzUkbzEkZzAkdDE3NjgwNzcwMzUkajYwJGwwJGgw";
-const LOCAL_PDF_PATH = "./tableau_manual.pdf";
+const LOCAL_PDF_PATH = path.resolve("./tableau_manual.pdf");
 
-export class TableauKnowledgeBase {
-    private vectorStore: MemoryVectorStore | null = null;
-    private model: ChatOpenAI;
+export class TableauGeminiBrain {
+    private genAI: GoogleGenerativeAI;
+    private fileManager: GoogleAIFileManager;
+    private model: any;
+    private uploadedFileUri: string | null = null;
 
-    constructor() {
-        this.model = new ChatOpenAI({
-            modelName: "gpt-4o", // Or gpt-3.5-turbo
-            temperature: 0,
-        });
+    constructor(apiKey: string) {
+        this.genAI = new GoogleGenerativeAI(apiKey);
+        this.fileManager = new GoogleAIFileManager(apiKey);
+        this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     }
 
     async initialize() {
-        if (this.vectorStore) return;
-
         console.log("Checking for local PDF...");
         if (!fs.existsSync(LOCAL_PDF_PATH)) {
             console.log("Downloading Tableau Manual (this may take a while)...");
@@ -35,56 +29,63 @@ export class TableauKnowledgeBase {
             console.log("Local PDF found.");
         }
 
-        console.log("Parsing PDF...");
-        const rawText = await this.parsePdf();
+        console.log("Uploading PDF to Gemini File API...");
+        try {
+            const uploadResponse = await this.fileManager.uploadFile(LOCAL_PDF_PATH, {
+                mimeType: "application/pdf",
+                displayName: "Tableau Desktop Manual",
+            });
 
-        console.log("Creating chunks...");
-        // Split text into manageable chunks
-        const splitter = new RecursiveCharacterTextSplitter({
-            chunkSize: 1000,
-            chunkOverlap: 200,
-        });
-        const docs = await splitter.createDocuments([rawText]);
-        console.log(`Created ${docs.length} chunks. Generating embeddings...`);
+            this.uploadedFileUri = uploadResponse.file.uri;
+            console.log(`File Uploaded Successfully! URI: ${this.uploadedFileUri}`);
 
-        // Create Vector Store in Memory
-        // Note: For 3800 pages, this is heavy. 
-        // In a production Dedalus environment, you might want to switch this to ChromaDB or LanceDB on disk.
-        this.vectorStore = await MemoryVectorStore.fromDocuments(
-            docs,
-            new OpenAIEmbeddings()
-        );
+            // Wait for file to proceed to ACTIVE state
+            let file = await this.fileManager.getFile(uploadResponse.file.name);
+            while (file.state === "PROCESSING") {
+                process.stdout.write(".");
+                await new Promise((resolve) => setTimeout(resolve, 10_000));
+                file = await this.fileManager.getFile(uploadResponse.file.name);
+            }
+
+            if (file.state !== "ACTIVE") {
+                throw new Error(`File processing failed. State: ${file.state}`);
+            }
+            console.log("\nTableau Manual is Ready for Queries!");
+
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            throw error;
+        }
     }
 
     async query(question: string): Promise<string> {
-        if (!this.vectorStore) {
+        if (!this.uploadedFileUri) {
             return "Knowledge base is still initializing. Please try again in a few minutes.";
         }
 
-        const chain = RetrievalQAChain.fromLLM(
-            this.model,
-            this.vectorStore.asRetriever()
-        );
+        try {
+            const result = await this.model.generateContent([
+                {
+                    fileData: {
+                        mimeType: "application/pdf",
+                        fileUri: this.uploadedFileUri
+                    }
+                },
+                { text: `You are an expert on Tableau Software. Answer the user's question accurately based strictly on the provided Tableau Desktop manual. \n\nUser Question: ${question}` }
+            ]);
 
-        const response = await chain.call({
-            query: question,
-        });
-
-        return response.text;
+            return result.response.text();
+        } catch (error: any) {
+            return `Error querying Gemini: ${error.message}`;
+        }
     }
 
     private async downloadPdf() {
         const response = await axios({
             url: PDF_URL,
             method: "GET",
-            responseType: "arraybuffer", // Important for binary data
+            responseType: "arraybuffer",
         });
         fs.writeFileSync(LOCAL_PDF_PATH, response.data);
-    }
-
-    private async parsePdf(): Promise<string> {
-        const dataBuffer = fs.readFileSync(LOCAL_PDF_PATH);
-        const data = await pdf(dataBuffer);
-        return data.text;
     }
 }
