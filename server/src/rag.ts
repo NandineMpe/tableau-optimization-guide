@@ -81,11 +81,18 @@ export class TableauGeminiBrain {
     }
 
     private async downloadPdf() {
+        const writer = fs.createWriteStream(LOCAL_PDF_PATH);
         const response = await axios({
             url: PDF_URL,
             method: "GET",
-            responseType: "arraybuffer",
+            responseType: "stream",
         });
-        fs.writeFileSync(LOCAL_PDF_PATH, response.data);
+
+        response.data.pipe(writer);
+
+        return new Promise<void>((resolve, reject) => {
+            writer.on("finish", resolve);
+            writer.on("error", reject);
+        });
     }
 }
