@@ -7,7 +7,7 @@ export class TableauGeminiBrain {
     constructor(apiKey) {
         this.genAI = new GoogleGenerativeAI(apiKey);
         // We do NOT use FileManager anymore to save memory
-        this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     }
 
     async initialize() {
