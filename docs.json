@@ -28,6 +28,13 @@
             ]
           },
           {
+            "group": "Data Preparation",
+            "pages": [
+              "data-prep/data-interpreter",
+              "data-prep/relationships"
+            ]
+          },
+          {
             "group": "Self-Service",
             "pages": [
               "exploration/web-edit",

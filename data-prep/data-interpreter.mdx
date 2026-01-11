@@ -1,0 +1,40 @@
+---
+title: "Data Interpreter"
+description: "Automatically clean messy Excel files so Tableau can read them."
+---
+
+## The Problem with Excel Files
+
+Excel is designed for humans, not computers. We often add:
+*   Titles and subtitles in the first few rows.
+*   Merged cells to group columns.
+*   Empty rows for spacing.
+*   Footnotes at the bottom.
+
+If you connect Tableau directly to a sheet like this, it will likely read the Title as a column header and give you `Null` values everywhere.
+
+## The Solution: Data Interpreter
+
+Tableau has a built-in AI tool called **Data Interpreter** that detects these common issues and resolves them automatically.
+
+### How to Use It
+
+1.  **Connect to Data:** Open Tableau and select **Microsoft Excel**.
+2.  **Drag your Sheet:** Drag the sheet onto the canvas.
+3.  **Look Left:** On the left-hand sidebar, you will see a checkbox: **"Use Data Interpreter"**.
+4.  **Check It:** Click the box to turn it on.
+
+### What Happens?
+
+Tableau will scan the file and:
+1.  Strip out the titles and footnotes.
+2.  Un-merge cells and fill down the values (e.g., if "Q1" was merged across 3 months, it will put "Q1" for Jan, Feb, and Mar).
+3.  Identify the true header row.
+
+### Verifying the Results
+
+Click the link **"Review the results"** that appears after you check the box. 
+This opens an Excel file where Tableau color-codes exactly what it did:
+*   **Red:** The data headers it found.
+*   **Green:** The actual data it kept.
+*   **Excluded:** The titles/footnotes it ignored.
