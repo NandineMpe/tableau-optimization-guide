@@ -26,18 +26,82 @@ export class TableauGeminiBrain {
             );
 
             if (existingFile && existingFile.state === "ACTIVE") {
-                console.log("Found existing Tableau manual in Gemini File API");
+                console.log("✅ Found existing Tableau manual in Gemini File API");
+                console.log("File URI:", existingFile.uri);
                 this.uploadedFile = existingFile;
-            } else {
-                console.log("Tableau manual not found or not active. Please upload manually.");
-                console.log("Due to Render's memory constraints, automatic PDF upload is disabled.");
-                console.log("Upload the PDF manually using the Gemini File API or use a pre-uploaded file URI.");
+                return;
             }
+
+            // If not found, upload from URL automatically
+            console.log("📥 Tableau manual not found. Uploading from URL...");
+            console.log("This is a one-time operation and may take 5-10 minutes...");
+
+            // Import required modules
+            const https = await import('https');
+            const fs = await import('fs');
+            const path = await import('path');
+            const os = await import('os');
+
+            const tempPath = path.join(os.tmpdir(), 'tableau_desktop.pdf');
+
+            // Download PDF
+            await new Promise((resolve, reject) => {
+                const file = fs.createWriteStream(tempPath);
+                https.get(PDF_URL, (response) => {
+                    response.pipe(file);
+                    file.on('finish', () => {
+                        file.close();
+                        console.log("✅ PDF downloaded successfully");
+                        resolve();
+                    });
+                }).on('error', (err) => {
+                    fs.unlink(tempPath, () => { });
+                    reject(err);
+                });
+            });
+
+            // Upload to Gemini
+            console.log("📤 Uploading to Gemini File API...");
+            const uploadResult = await this.fileManager.uploadFile(tempPath, {
+                mimeType: "application/pdf",
+                displayName: FILE_DISPLAY_NAME,
+            });
+
+            console.log("⏳ Upload complete, waiting for processing...");
+
+            // Wait for processing (max 10 minutes)
+            let file = await this.fileManager.getFile(uploadResult.file.name);
+            let attempts = 0;
+            while (file.state === "PROCESSING" && attempts < 60) {
+                console.log(`Processing... (${attempts + 1}/60)`);
+                await new Promise(resolve => setTimeout(resolve, 10000));
+                file = await this.fileManager.getFile(uploadResult.file.name);
+                attempts++;
+            }
+
+            // Clean up temp file
+            try {
+                fs.unlinkSync(tempPath);
+                console.log("🧹 Cleaned up temporary file");
+            } catch (e) {
+                // Ignore cleanup errors
+            }
+
+            if (file.state === "ACTIVE") {
+                this.uploadedFile = file;
+                console.log("🎉 SUCCESS! Tableau manual is ready for RAG!");
+                console.log("File URI:", file.uri);
+            } else {
+                console.error("⚠️ File processing timeout. State:", file.state);
+                console.log("Server will use fallback mode");
+            }
+
         } catch (error) {
-            console.error("Error checking for uploaded files:", error.message);
+            console.error("❌ Error during initialization:", error.message);
+            console.log("Server will continue in fallback mode (general Tableau knowledge)");
         }
 
-        console.log("Server initialized successfully.");
+        console.log("Server initialization complete.");
     }
 
     async query(question) {
