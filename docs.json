@@ -14,6 +14,9 @@
     "dark": "#004385"
   },
   "favicon": "/favicon.svg",
+  "search": {
+    "prompt": "Ask me anything about Tableau optimization..."
+  },
   "navigation": {
     "tabs": [
       {
